@@ -28,12 +28,13 @@ interface Product {
   updatedAt: Date
 }
 
-export default function EditProduct({ params }: { params: { id: string } }) {
+export default function EditProduct({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [product, setProduct] = useState<Product | null>(null)
+  const [productId, setProductId] = useState<string>('')
   const [form, setForm] = useState<ProductForm>({
     name: '',
     description: '',
@@ -45,13 +46,23 @@ export default function EditProduct({ params }: { params: { id: string } }) {
   })
 
   useEffect(() => {
-    loadProduct()
-  }, [params.id])
+    const getParams = async () => {
+      const resolvedParams = await params
+      setProductId(resolvedParams.id)
+    }
+    getParams()
+  }, [params])
+
+  useEffect(() => {
+    if (productId) {
+      loadProduct()
+    }
+  }, [productId])
 
   const loadProduct = async () => {
     try {
       setInitialLoading(true)
-      const productData = await productService.getById(params.id)
+      const productData = await productService.getById(productId)
       
       if (!productData) {
         alert('商品が見つかりませんでした。')

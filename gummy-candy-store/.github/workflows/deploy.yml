@@ -38,6 +38,6 @@ jobs:
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: gummy-candy-store/out
+        publish_dir: ./gummy-candy-store/out
         force_orphan: true
         cname: # カスタムドメインがある場合はここに記入

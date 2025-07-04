@@ -2,10 +2,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  experimental: {
-    appDir: true,
-  },
+  output: 'export',
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
+  distDir: 'out',
+  basePath: process.env.NODE_ENV === 'production' ? '/gummy-candy-store' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/gummy-candy-store/' : '',
   images: {
+    unoptimized: true,
     domains: ['localhost'],
   },
   env: {

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { productService, orderService } from '@/lib/indexeddb'
 import {
   ShoppingBagIcon,
@@ -9,12 +10,35 @@ import {
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline'
 
+interface Order {
+  id: string
+  customerName: string
+  customerEmail: string
+  customerPhone: string
+  customerAddress: {
+    postalCode: string
+    prefecture: string
+    city: string
+    address: string
+  }
+  items: Array<{
+    productId: string
+    productName: string
+    quantity: number
+    price: number
+  }>
+  totalAmount: number
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
+  createdAt: Date
+  updatedAt: Date
+}
+
 interface DashboardStats {
   totalProducts: number
   totalOrders: number
   totalRevenue: number
   lowStockProducts: number
-  recentOrders: any[]
+  recentOrders: Order[]
   topProducts: Array<{ name: string; sales: number }>
 }
 
@@ -209,34 +233,34 @@ export default function AdminDashboard() {
         <div className="bg-white shadow rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">商品管理</h3>
           <p className="text-gray-600 mb-4">商品の追加、編集、削除を行います。</p>
-          <a
+          <Link
             href="/admin/products"
             className="inline-block bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition-colors"
           >
             商品管理へ
-          </a>
+          </Link>
         </div>
 
         <div className="bg-white shadow rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">注文管理</h3>
           <p className="text-gray-600 mb-4">注文の確認、ステータス更新を行います。</p>
-          <a
+          <Link
             href="/admin/orders"
             className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
           >
             注文管理へ
-          </a>
+          </Link>
         </div>
 
         <div className="bg-white shadow rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">在庫管理</h3>
           <p className="text-gray-600 mb-4">在庫状況の確認と更新を行います。</p>
-          <a
+          <Link
             href="/admin/inventory"
             className="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
           >
             在庫管理へ
-          </a>
+          </Link>
         </div>
       </div>
     </div>

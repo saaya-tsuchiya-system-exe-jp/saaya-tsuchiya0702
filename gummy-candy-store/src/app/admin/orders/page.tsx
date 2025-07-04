@@ -17,8 +17,15 @@ interface Order {
   customerName: string
   customerEmail: string
   customerPhone: string
+  customerAddress: {
+    postalCode: string
+    prefecture: string
+    city: string
+    address: string
+  }
   items: Array<{
     productId: string
+    productName: string
     quantity: number
     price: number
   }>
@@ -134,16 +141,6 @@ export default function OrdersManagement() {
     }
   }
 
-  const getStatusText = (status: Order['status']) => {
-    switch (status) {
-      case 'pending': return '保留中'
-      case 'processing': return '処理中'
-      case 'shipped': return '発送済み'
-      case 'delivered': return '配達完了'
-      case 'cancelled': return 'キャンセル'
-      default: return status
-    }
-  }
 
   const getStatusBadgeClass = (status: Order['status']) => {
     switch (status) {

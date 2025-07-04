@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { productService, initDB } from '@/lib/indexeddb'
 import ProductCard from '@/components/ProductCard'
@@ -17,7 +17,7 @@ interface Product {
   updatedAt: Date
 }
 
-export default function ProductsPage() {
+function ProductsContent() {
   const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
@@ -164,5 +164,18 @@ export default function ProductsPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600"></div>
+        <div className="ml-4 text-lg">読み込み中...</div>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   )
 }

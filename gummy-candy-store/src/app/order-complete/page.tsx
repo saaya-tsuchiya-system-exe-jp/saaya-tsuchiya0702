@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { orderService } from '@/lib/indexeddb'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
@@ -27,7 +27,7 @@ interface Order {
   createdAt: Date
 }
 
-export default function OrderCompletePage() {
+function OrderCompleteContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const orderId = searchParams.get('orderId')
@@ -185,5 +185,20 @@ export default function OrderCompletePage() {
         </button>
       </div>
     </div>
+  )
+}
+
+export default function OrderCompletePage() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">注文情報を読み込み中...</p>
+        </div>
+      </div>
+    }>
+      <OrderCompleteContent />
+    </Suspense>
   )
 }

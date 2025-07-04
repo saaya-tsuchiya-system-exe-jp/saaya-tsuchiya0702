@@ -1,8 +1,13 @@
 import OrderDetailClient from './OrderDetailClient'
 
-// 静的パラメータを生成（注文は動的に作成されるため空の配列を返す）
+// 静的パラメータを生成（サンプル注文IDを生成）
 export async function generateStaticParams() {
-  return []
+  // サンプル注文IDを生成
+  return [
+    { id: 'sample-order-1' },
+    { id: 'sample-order-2' },
+    { id: 'sample-order-3' },
+  ]
 }
 
 export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {

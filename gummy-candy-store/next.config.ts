@@ -6,8 +6,8 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   distDir: 'out',
-  basePath: process.env.NODE_ENV === 'production' ? '/saaya-tsuchiya0702' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/saaya-tsuchiya0702/' : '',
+  basePath: '',
+  assetPrefix: '',
   images: {
     unoptimized: true,
     domains: ['localhost'],

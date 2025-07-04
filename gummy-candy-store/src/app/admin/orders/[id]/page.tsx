@@ -20,8 +20,15 @@ interface Order {
   customerName: string
   customerEmail: string
   customerPhone: string
+  customerAddress: {
+    postalCode: string
+    prefecture: string
+    city: string
+    address: string
+  }
   items: Array<{
     productId: string
+    productName: string
     quantity: number
     price: number
   }>
@@ -42,20 +49,31 @@ interface OrderWithProducts extends Order {
   }>
 }
 
-export default function OrderDetail({ params }: { params: { id: string } }) {
+export default function OrderDetail({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
   const [order, setOrder] = useState<OrderWithProducts | null>(null)
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
+  const [orderId, setOrderId] = useState<string>('')
 
   useEffect(() => {
-    loadOrder()
-  }, [params.id])
+    const getParams = async () => {
+      const resolvedParams = await params
+      setOrderId(resolvedParams.id)
+    }
+    getParams()
+  }, [params])
+
+  useEffect(() => {
+    if (orderId) {
+      loadOrder()
+    }
+  }, [orderId])
 
   const loadOrder = async () => {
     try {
       setLoading(true)
-      const orderData = await orderService.getById(params.id)
+      const orderData = await orderService.getById(orderId)
       
       if (!orderData) {
         alert('注文が見つかりませんでした。')
